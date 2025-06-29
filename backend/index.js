@@ -8,7 +8,18 @@ const userRoutes = require("./routers/user");
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173", // Your local development server
+      "http://localhost:3000", // Alternative local port
+      "https://school-6i7h.vercel.app", // Your deployed frontend (when you deploy it)
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
