@@ -1,0 +1,13 @@
+   singup api
+   /api/users/add/
+   Post 
+   the req.body : 
+   { name, email, password, gender, phone, birthDate, image , classid }
+
+
+//login api
+/api/users/login
+{ email, password } = req.body
+post 
+
+
