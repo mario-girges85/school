@@ -10,7 +10,7 @@ const userRoutes = require("./routers/user");
 
 const app = express();
 const store = new MongoDBStore({
-  uri: "mongodb+srv://mario85:stopthisshit@cluster0.zpxocbf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+  uri: process.env.MONGODB_CONNECTION,
   collection: "sessions",
 });
 app.use(
