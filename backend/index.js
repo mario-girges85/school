@@ -27,8 +27,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://school-bay-nine.vercel.app",
-      "https://school-6i7h.vercel.app",
+      "http://localhost:5173/",
+      "https://school-bay-nine.vercel.app/",
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
