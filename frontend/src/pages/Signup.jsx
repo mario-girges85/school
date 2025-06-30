@@ -65,7 +65,8 @@ const Signup = () => {
       const response = await axios.post(
         "https://school-6i7h.vercel.app/api/users/add",
         // "http://localhost:5000/api/users/add",
-        formData, { withCredentials: true }
+        formData,
+        { withCredentials: true }
       );
       console.log("Signup successful :", response.data);
       setSuccess("Account created successfully!");
