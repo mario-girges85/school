@@ -26,6 +26,7 @@ app.use(
 app.use(
   cors({
     origin: [
+      "https://school-6i7h.vercel.app/",
       "http://localhost:5173", // Your local development server
       "http://localhost:3000", // Alternative local port
       "https://school-6i7h.vercel.app", // Your deployed frontend (when you deploy it)

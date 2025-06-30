@@ -28,7 +28,6 @@ const Login = () => {
     try {
       // Replace with your actual API endpoint
       const response = await axios.post(
-        // "http://localhost:5000/api/users/login",
         "https://school-6i7h.vercel.app/api/users/login",
         formData
       );
