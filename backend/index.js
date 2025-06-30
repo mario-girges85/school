@@ -29,6 +29,7 @@ app.use(
       "https://school-6i7h.vercel.app/*",
       "http://localhost:5173",
       "http://localhost:3000",
+      "https://school-bay-nine.vercel.app/*",
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
