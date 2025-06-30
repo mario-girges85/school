@@ -1,10 +1,13 @@
 const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const session = require("express-session");
+const MongoStore = require("connect-mongodb-session")(session);
+
 //add user endpoint (signup)
 const addUser = async (req, res) => {
   try {
     // console.log(req.body);
     const { name, email, password, gender, phone, birthDate, image } = req.body;
-
     // Basic validation
     if (
       !name ||
@@ -31,34 +34,40 @@ const addUser = async (req, res) => {
       });
     }
 
-    // Create new user
-    const newUser = new User({
-      name,
-      email,
-      password, // Note: In production, you should hash the password
-      gender,
-      phone,
-      birthDate,
-      image,
-    });
-
-    const savedUser = await newUser.save();
+    bcrypt
+      .hash(password, 12)
+      .then((hashedPassword) => {
+        // Create new user
+        const newUser = new User({
+          name,
+          email,
+          password: hashedPassword, // Note: In production, you should hash the password
+          gender,
+          phone,
+          birthDate,
+          image,
+        });
+        newUser.save();
+      })
+      .catch((err) => {
+        console.log("couldnot hash password\n", err);
+      });
 
     // Return user data (excluding password)
-    const userResponse = {
-      id: savedUser._id,
-      name: savedUser.name,
-      email: savedUser.email,
-      gender: savedUser.gender,
-      phone: savedUser.phone,
-      birthDate: savedUser.birthDate,
-      image: savedUser.image,
-    };
+    // const userResponse = {
+    //   id: savedUser._id,
+    //   name: savedUser.name,
+    //   email: savedUser.email,
+    //   gender: savedUser.gender,
+    //   phone: savedUser.phone,
+    //   birthDate: savedUser.birthDate,
+    //   image: savedUser.image,
+    // };
 
     res.status(201).json({
       success: true,
       message: "User created successfully",
-      data: userResponse,
+      // data: userResponse,
     });
   } catch (error) {
     console.error("Error creating user:", error);
@@ -71,17 +80,35 @@ const addUser = async (req, res) => {
 };
 
 //login endpoint
-const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+
+const loginUser = (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
   User.findOne({ email }).then((user) => {
     if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "User not found",
-      });
-    } else {
-      console.log(user);
+      return res.redirect("/login");
     }
+
+    bcrypt
+      .compare(password, user.password)
+      .then((doMatch) => {
+        if (doMatch) {
+          req.session.isLoggedIn = true;
+          req.session.user = user;
+          req.session.role = user.role;
+          return req.session.save((err) => {
+            console.log(err);
+            console.log("user logged in");
+            res.redirect("/");
+          });
+        } else {
+          return res.redirect("/login");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.redirect("/login");
+      });
   });
 };
 

@@ -29,20 +29,12 @@ const Login = () => {
       // Replace with your actual API endpoint
       const response = await axios.post(
         "http://localhost:5000/api/users/login",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        formData
       );
 
-      console.log("Login successful:", response.data);
+      console.log("Login successful:", response);
 
       // Store token in localStorage (if your API returns one)
-      if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
-      }
 
       // Redirect to home page or dashboard
       navigate("/");
