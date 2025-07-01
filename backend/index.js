@@ -15,10 +15,15 @@ const store = new MongoDBStore({
 });
 app.use(
   session({
-    secret: "my secret",
+    secret: "secretSSS",
     resave: false,
     saveUninitialized: false,
     store: store,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
   })
 );
 

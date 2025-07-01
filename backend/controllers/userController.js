@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
-const session = require("express-session");
-const MongoStore = require("connect-mongodb-session")(session);
+// const session = require("express-session");
+// const MongoStore = require("connect-mongodb-session")(session);
 
 //add user endpoint (signup)
 const addUser = async (req, res) => {
@@ -93,16 +93,21 @@ const loginUser = (req, res, next) => {
       .compare(password, user.password)
       .then((doMatch) => {
         if (doMatch) {
+          console.log("user logged in");
+
           req.session.isLoggedIn = true;
           req.session.user = user;
           req.session.role = user.role;
+
           return req.session.save((err) => {
             console.log(err);
-            console.log("user logged in");
-            res.redirect("/");
+            res.status(200).json({ success: true, message: "Logged in" });
           });
         } else {
-          return res.redirect("/login");
+          return res.status(401).json({
+            success: false,
+            message: "Invalid password",
+          });
         }
       })
       .catch((err) => {

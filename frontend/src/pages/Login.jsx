@@ -26,17 +26,15 @@ const Login = () => {
     setError("");
 
     try {
-      // Replace with your actual API endpoint
       const response = await axios.post(
-        "https://school-6i7h.vercel.app/api/users/login",
-        formData
+        "http://localhost:5000/api/users/login",
+        formData,
+        {
+          withCredentials: true, // ✅ مهم جدًا
+        }
       );
 
       console.log("Login successful:", response);
-
-      // Store token in localStorage (if your API returns one)
-
-      // Redirect to home page or dashboard
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Invalid email or password");
