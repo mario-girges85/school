@@ -21,7 +21,8 @@ app.use(
     store: store,
     cookie: {
       httpOnly: true,
-      secure: false,
+      secure: true,
+      //true with production    false with localhost
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
   })
